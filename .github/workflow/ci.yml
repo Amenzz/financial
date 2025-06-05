@@ -1,4 +1,4 @@
-name: CI
+name: Sentiment Stock Correlation CI
 
 on: [push, pull_request]
 
@@ -7,18 +7,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Install deps
-        run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install pandas matplotlib seaborn textblob
+          python -m textblob.download_corpora
 
-      - name: Run tests
-        run: python -m unittest discover
+      - name: Run main script
+        run: python main.py  # change if your script file is named differently
 
       - name: Show Python version
         run: python --version
